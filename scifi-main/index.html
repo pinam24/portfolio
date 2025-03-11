@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sci Fi Tracery Story</title>
+    <script src="jquery-3.7.1.min.js"></script>
+    <script src="p5.min.js"></script>
+    <script src="tracery.min.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #000000;
+            color: #ff0000;
+            border: 1px solid #ff0000;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        .back-button:hover {
+            background-color: #ff0000;
+            color: #000000;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+        #credit-button {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            background-color: rgba(128, 128, 128, 0.564);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe93;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #cecece;
+            width: 80%;
+            max-width: 300px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-button">← Back to Portfolio</a>
+    <button id="credit-button">Credits</button>
+
+    <!-- The Modal -->
+    <div id="creditModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>Credits to Project Gutenberg:</p>
+            <ul>
+                <li>Bram Stoker - Dracula</li>
+                <li>H. G. Wells - Invisible</li>
+                <li>J. M. Barrie - Peter Pan</li>
+                <li>H. G. Wells - The Time Machine</li>
+                <li>Evgenii Ivanovich Zamiatin - We</li>
+                <li>https://editor.p5js.org/Codefish/sketches/fABwyG9Jz</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Wait for the document to be fully loaded
+        $(document).ready(function() {
+            // Load the JSON grammar file
+            $.getJSON("creative.json", function(data) {
+                // Create a Tracery grammar from the loaded JSON
+                var grammar = tracery.createGrammar(data);
+
+                // Generate a version of the grammar using the origin rule
+                var originText = grammar.flatten("#origin#");
+                var title = grammar.flatten("#title_name#");
+
+                // Initialize p5.js sketch
+                new p5(function(p) {
+                    let generatedText;
+                    var y, z = 0, crawlFont;
+                    var stars = [];
+
+                    p.preload = function() {
+                        crawlFont = p.loadFont('Inconsolata-Regular.ttf');
+                    };
+
+                    p.setup = function() {
+                        p.createCanvas(p.windowWidth, p.windowHeight, p.WEBGL);
+                        y = p.height / 2;
+                        generatedText = '';
+                        for (let i = 0; i < 10; i++) { // Generate 5 paragraphs
+                            generatedText += grammar.flatten('#origin#') + '\n\n';
+                        }
+                         // Generate stars
+                         for (let i = 0; i < 1000; i++) { // Increase the number of stars
+                             stars.push({
+                                 x: p.random(-p.width / 2, p.width / 2),
+                                 y: p.random(-p.height / 2, p.height / 2),
+                                 z: p.random(-p.width / 2, p.width / 2),
+                                 speed: p.random(0.5, 2)
+                             });
+                        }
+                    };
+
+                    p.draw = function() {
+                        p.background(0);
+                        p.push();
+                        p.textFont(crawlFont);
+                        p.translate(0, y, z);
+                        p.rotateX(p.PI / 4);
+                        p.textAlign(p.CENTER, p.TOP);
+                        p.textSize(p.width / 12);
+                        p.fill(255, 200, 0);
+                        p.text(title, 0, 0);
+                        p.textSize(p.width / 20);
+                        var w = p.width * 0.8;
+                        p.text(generatedText, -w / 2, p.width / 4, w, p.height * 20);
+                        p.pop();
+                        y -= p.height / 500;
+                        z -= p.height / 500;
+                        // Draw and animate stars
+                        p.push();
+                        p.noStroke();
+                        p.fill(255); // Set star color to white
+                        for (let star of stars) {
+                            // Calculate distance from mouse cursor to star
+                            let d = p.dist(p.mouseX - p.width / 2, p.mouseY - p.height / 2, star.x, star.y);
+                            if (d < 50) { // If the distance is less than 50 pixels
+                                let angle = p.atan2(star.y - (p.mouseY - p.height / 2), star.x - (p.mouseX - p.width / 2));
+                                star.x += p.cos(angle) * 5;
+                                star.y += p.sin(angle) * 5;
+                            }
+                        
+                            p.push();
+                            p.translate(star.x, star.y, star.z);
+                            p.sphere(1); // Make stars small
+                            p.pop();
+
+                            // Move the star
+                            star.z += star.speed;
+                            if (star.z > p.width / 2) {
+                                star.z = -p.width / 2;
+                            }
+                        }
+                        p.pop();
+                    };
+
+                    p.mousePressed = function() {
+                        // Generate new stars around the click position
+                        for (let i = 0; i < 50; i++) {
+                            stars.push({
+                                x: p.mouseX - p.width / 2 + p.random(-50, 50),
+                                y: p.mouseY - p.height / 2 + p.random(-50, 50),
+                                z: p.random(-p.width / 2, p.width / 2),
+                                speed: p.random(0.5, 2)
+                            });
+                        }
+                    };
+
+                    p.windowResized = function() {
+                        // Resize the canvas if the window is resized
+                        p.resizeCanvas(p.windowWidth, p.windowHeight);
+                    };
+                });
+            }).fail(function() {
+                console.error("Error loading JSON grammar file.");
+            });
+
+            // Get the modal
+            var modal = document.getElementById("creditModal");
+
+            // Get the button that opens the modal
+            var btn = document.getElementById("credit-button");
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks the button, open the modal 
+            btn.onclick = function() {
+                modal.style.display = "block";
+            }
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        });
+    </script>
+</body>
+</html>

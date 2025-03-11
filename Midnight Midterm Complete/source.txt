@@ -1,0 +1,157 @@
+"Midnight Midterm" by Marco Pina Marcelino
+
+Release along with an interpreter, a website, cover art ("A generated midnight classroom") and the source text.
+
+[Defining the rooms]
+The Library is a room. The description of the Library is "Tall shelves loom around you, their books whispering unintelligibly. The fluorescent lights flicker above, casting uneasy shadows. The numbers shifting every time you glance at them."
+
+The Math Classroom is a room. The description of the Math Classroom is "Desks are arranged in strange, non-Euclidean angles, and the blackboard is covered in an impossible equation. The oak door remains locked, and the air hums with a silent tension. It might be worth to examine the blackboard."
+
+The Clock Tower is a room. The description of the Clock Tower is "A massive, ancient clock looms above. Its gears grind in unnatural rhythms, and the hands twitch, unable to strike midnight. A brass lever stands nearby, seemingly waiting to be pulled."
+
+[Doors with Room Locations]
+The wooden door is a door. The wooden door is east of the Library and west of the Math Classroom. The wooden door is closed and locked. 
+
+The oak door is a door. The oak door is east of the Math Classroom and west of the Clock Tower. The oak door is closed and locked.
+
+[When play begins]
+When play begins:  
+	say "Your head jerks up from your notebook. You were studying for your midterm, but something is wrong. The clock on the wall is frozen at midnight. The air is heavy, and the whispers of the books seem to call your name.";  
+	Now the player is in the Library.
+
+[Bookshelf]
+The bookshelf is a container. The bookshelf is in the Library. The description of the bookshelf is "Rows of books stand ominously, their spines flickering in and out of focus. One book catches your eye: 'Solving for X in a Dream.'"
+
+[Defining the books]
+A book is a kind of thing. A book can be dangerous or safe. 
+
+Solving for X in a Dream is a book in the bookshelf. It is safe. The description of Solving for X in a Dream is "The cover is worn, and the title glows faintly. This might be important to PICK up."
+
+The Infinite Hotel is a book in the bookshelf. It is dangerous. The description of The Infinite Hotel is "A paradox of infinite guests and rooms, the cover seems to stretch endlessly as you stare at it."
+
+The Banach-Tarski Nightmare is a book in the bookshelf. It is dangerous. The description of The Banach-Tarski Nightmare is "A book about splitting objects into impossible copies. You suddenly feel like you are being divided just looking at it."
+
+The Zeno’s Last Step is a book in the bookshelf. It is dangerous. The description of The Zeno’s Last Step is "A book about never reaching your destination. You feel like you are slowing down the longer you read."
+
+[Picking up the books]
+Instead of taking a dangerous book:
+	say "As you touch the book, reality warps around you. A whisper echoes in your mind: 'Are you sure you want to take this book?'";
+	if the player consents:
+		say "The room twists, the numbers in your notes devour you whole... You have failed.";
+		end the story;
+	otherwise:
+		say "You pull your hand away just in time, the whispers fading back into the shelves."
+
+Instead of taking a safe book:
+	say "As you pick up the book, a faint hum resonates through the air. The wooden door unlocks with a heavy click.";
+	now the wooden door is unlocked.
+
+Chapter 1 - Conversation Rules
+
+[The Frazzled Student]
+Interrogative is a kind of value. 
+The interrogatives are who, what, when, where, how, and why.
+
+Current question is an interrogative that varies.
+
+After asking Elliot about something:
+	respond to the question.
+After answering Elliot that something:
+	respond to the question.
+	
+Understand "ask [Elliot] [text]" as asking it about.
+
+Elliot is a person in the Math Classroom. "A frazzled classmate (Elliot), pacing nervously. His eyes dart between the shifting numbers on the blackboard and the locked oak door. Maybe he knows how to get out?"
+
+After reading a command:
+	if the player's command includes "[interrogative]":
+		now the current question is the interrogative understood;
+
+Table of Elliot's Topics
+Topic	Question Type	Reply
+"midterm/test/exam/quiz"	what	"Elliot groans. 'I was just trying to study, and now I'm stuck in this nightmare. I can't even remember what was on the test anymore!'"
+"numbers/number"	what	"'The numbers keep changing when I look at them. It's like they don’t want me to solve anything!' Elliot mutters."
+"clock/time/midnight/watch"	what	"'The clock tower… something is wrong with time here. I think we have to fix it before we can escape.'"
+"book/books/library"	what	"'There was something about a book in the library. I think it held the key to getting out, but I never found the right one.'"
+"equation/function/problem/hint"	what	"'That equation on the board—something’s missing. Maybe there’s a clue hidden in the room?'"
+"escape/plan/help/hints/hint"	how	"'I don't know how to get out of here. But I feel like the answer has to be in the sticky notes?'"
+"sticky note/clue/paper/sticky notes/sticky note a/sticky note b"	what	"'I swear I saw something written down on one of the desks. Maybe there's a clue hidden there?'"
+"blackboard/equation/solve"	how	"'Try plugging in the numbers you found on those notes. The answer has to be there.'"
+"location/place/where"	where	"'I wish I knew… it's like we're trapped in a twisted version of our school. And the test never ends.'"
+"Elliot/person/student"	who	"'I'm Elliot. I was just studying, and then… I ended up here. Same as you, right?'"
+		
+To respond to the question:
+	repeat through the Table of Elliot's Topics:
+		if the topic understood includes topic entry:
+			if the current question is the question type entry:
+				say "[reply entry][paragraph break]";
+				rule succeeds;
+	say "'I-I am not sure I understood what you meant. Can you repeat that again?'"
+	
+Understand "ask [Elliot] [text]" as asking it about.
+	
+[Implementing the Desks with Hints]
+A desk is a kind of container.
+
+Desk A is a desk in the Math Classroom. The description of Desk A is "A worn-out desk with scribbles carved into its surface. The drawer is slightly ajar."
+Desk B is a desk in the Math Classroom. The description of Desk B is "A desk covered in faded numbers and symbols. Something is tucked beneath it."
+
+A sticky note is a kind of thing.
+
+Sticky Note A is a sticky note in Desk A. The description of Sticky Note A is "A small yellow paper with 'A = 7' scribbled on it. This might be useful to PICK up."
+Sticky Note B is a sticky note in Desk B. The description of Sticky note B is "A small blue paper with 'B = 5' written in hurried handwriting. It must be important to PICK up."
+
+The blackboard is in the Math Classroom. "A massive blackboard looms over the room, covered in a cryptic equation: 'A + B = X'. The numbers seem to shift when you're not looking."
+
+Instead of examining the blackboard:
+	if player has Sticky Note A and player has Sticky Note B:
+		say "You study the equation carefully. Replacing A and B with their values, you solve for X. The answer is 12. A click echoes through the room as the locked oak door creaks open.";
+		now the oak door is unlocked;
+	otherwise:
+		say "The equation remains unsolved. Maybe there's something in the room we can PICK up that can help."
+		
+[Implementing Talking Clock in Clock Tower]
+
+After asking Talking Clock about something:
+	respond to the query.
+After answering Talking Clock that something:
+	respond to the query.
+	
+The Talking Clock is a person in the Clock Tower. "A strange humanoid figure with shifting clock hands in place of a face (Talking Clock). It mutters in a hollow, rhythmic voice."
+
+Table of Talking Clock's Topics
+Topic	Question Type	Reply
+"time"	what	"'Time twists and turns... It is not on your side, mortal. Midnight approaches, and with it, your fate.'"
+"clock"	what	"'The gears must move, or you shall remain here forever. But beware… time is fragile.'"
+"escape"	what	"'The answer lies in the hands of fate… or rather, the hands of the clock.'"
+"gears/mechanism"	what	"'The gears grind endlessly, yet time stands still. Fix them, or be trapped in this limbo forever...'"
+"hands/pointers"	what	"'The hands of the clock twitch, resisting change. They must be guided carefully, lest you lose yourself in time.'"
+"past/history"	what	"'The past is a ghost, whispering regrets. Turn back, and you may wake… but will you ever truly escape?'"
+"future/fate"	what	"'The future is an abyss, a chasm of uncertainty. Move forward, and your story may end... or begin anew.'"
+"buttons/switches"	what	"'Two choices. One moves forward, sealing your fate. The other moves backward, leaving you in the endless night. Choose wisely.'"
+"midnight/witching hour"	what	"'Midnight is the in-between, where time is neither here nor there. A moment stretched into eternity… a test you must escape.'"
+"you/who/what/clock/talking clock"	who	"'I am the Keeper of Time. A watcher. A whisper. A prisoner, just like you...'"
+
+To respond to the query:
+	repeat through the Table of Talking Clock's Topics:
+		if the topic understood includes topic entry:
+			if the current question is the question type entry:
+				say "[reply entry][paragraph break]";
+				rule succeeds;
+	say "Time will not wait for you... speak clearly"
+	
+Understand "ask [Talking Clock] [text]" as asking it about.
+	
+[Buttons that end or restart the game]
+
+The Forward button is in the Clock Tower. "A large, polished button labeled 'Forward.' It glows faintly, as if pulsing with an unseen energy. Pressing it feels like it might propel you into an unknown future."
+
+The Backward button is in the Clock Tower. "A worn, cracked button labeled 'Backward.' The label is faded, and the edges are chipped, as though many have pressed it before. Something about it feels unsettling, as if pressing it might rewind reality itself."
+	
+Instead of pushing the Forward button:
+	say "As you press the button, the gears grind into place. The clock strikes twelve, and the world around you dissolves. You wake up at your desk, safe and sound. You have escaped.";
+	end the story saying "A blinding light engulfs you, and suddenly... you are back in your dorm room, the exam forgotten. Was it all a dream?"
+
+Instead of pushing the Backward button:
+	say "You press the button, and time unravels. The world twists, and you wake up—still trapped in the Midnight Midterm, as if nothing had changed.";
+	end the story saying "time distorts. You wake up with a jolt, still at your desk. The clock reads midnight. The nightmare isn't over..."

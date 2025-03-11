@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+    <script src="https://unpkg.com/ml5@1/dist/ml5.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8" />
+    <title>Flappy Bird</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #0a0a0a;
+        font-family: 'Courier New', monospace;
+        color: #ff0000;
+      }
+
+      #game-container {
+        position: relative;
+        width: 800px;
+        height: 600px;
+        border: 2px solid #ff0000;
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+        margin: 20px;
+        overflow: hidden;
+      }
+
+      canvas {
+        display: block;
+      }
+
+      .back-button {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        padding: 10px 20px;
+        background-color: #000000;
+        color: #ff0000;
+        border: 1px solid #ff0000;
+        cursor: pointer;
+        font-family: 'Courier New', monospace;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        z-index: 1000;
+      }
+
+      .back-button:hover {
+        background-color: #ff0000;
+        color: #000000;
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+      }
+
+      .instructions {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #ff0000;
+        font-size: 1rem;
+        text-align: center;
+        text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+      }
+    </style>
+  </head>
+  <body>
+    <a href="../index.html" class="back-button">← Back to Portfolio</a>
+    <div id="game-container">
+      <script src="pipe.js"></script>
+      <script src="bird.js"></script>
+      <script src="sketch.js"></script>
+    </div>
+    <p class="instructions">Use your webcam and hold up your index finger to control the bird</p>
+  </body>
+</html>

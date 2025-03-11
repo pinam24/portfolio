@@ -1,0 +1,92 @@
+/* Gothic Emo Theme */
+body {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+header { text-align: center; }
+header .image { 
+    margin: 5em;
+    border: 2px solid #ff0000;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+}
+header .image img { 
+    border-radius: 0.5em;
+    filter: grayscale(50%) contrast(120%);
+}
+
+nav { 
+    text-align: center;
+    background-color: #1a1a1a;
+    padding: 1em 0;
+    border-top: 1px solid #ff0000;
+    border-bottom: 1px solid #ff0000;
+}
+
+nav ul li {
+    list-style: none;
+    display: inline;
+    margin: 0 1.5em;
+}
+
+nav ul li a {
+    color: #ff0000;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #ffffff;
+    text-shadow: 0 0 10px #ff0000;
+}
+
+nav ul li span { display: none; }
+nav .download span { display: none; }
+
+/* Custom Gothic Elements */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Crimson Text', serif;
+    color: #ff0000;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+a {
+    color: #ff0000;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: #ffffff;
+    text-shadow: 0 0 10px #ff0000;
+}
+
+/* Custom Button Styling */
+.button,
+button,
+input[type="submit"],
+input[type="reset"],
+input[type="button"] {
+    background-color: #1a1a1a;
+    color: #ff0000;
+    border: 1px solid #ff0000;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    transition: all 0.3s ease;
+}
+
+.button:hover,
+button:hover,
+input[type="submit"]:hover,
+input[type="reset"]:hover,
+input[type="button"]:hover {
+    background-color: #ff0000;
+    color: #000000;
+    border-color: #ff0000;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+}
